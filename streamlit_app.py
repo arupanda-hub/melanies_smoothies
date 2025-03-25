@@ -10,6 +10,7 @@
 # Import python packages
 import streamlit as st
 from snowflake.snowpark.functions import col
+import requests
 
 helpful_links = [
     "https://docs.streamlit.io",
@@ -104,7 +105,11 @@ if ingredients_list:
     # To convert the LIST to a STRING we can add a FOR LOOP block. A FOR LOOP will repeat once FOR every value in the LIST. 
 
     for fruit_chosen in ingredients_list:
-        ingredients_string += fruit_chosen + ' '    
+        ingredients_string += fruit_chosen + ' '   
+        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
+        # st.text(smoothiefroot_response.json())
+        smoothiefroot_df = st.dataframe(data=smoothiefroot_response.json(), use_container_width = True)
+
 
     # st.write(ingredients_string)
 
@@ -138,10 +143,5 @@ if ingredients_list:
         
         st.success('Your Smoothie is ordered,' + name_on_order +'!', icon="✅")
 
-
-import requests
-smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
-#st.text(smoothiefroot_response.json())
-smoothiefroot_df = st.dataframe(data=smoothiefroot_response.json(), use_container_width = True)
 
 
